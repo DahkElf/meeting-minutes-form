@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8" />
+</head>
+
+<body>
+
+<h1>Meeting Minutes</h1>
+<form id="mainForm" name="mainForm">
+	<h2>Attendance</h2>
+	
+	<table id="attenTable" name="attenTable">
+		<tr>
+			<td>Position</td>
+			<td>Present</td>
+			<td>Absent</td>
+			<td>Vacant</td>
+			<td>Name</td>	
+		</tr>
+		<tr>
+			<td>Chair</td>
+			<td><input type="radio" value="present" name="atten_chair_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_chair_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_chair_rbtn" /></td>
+			<td><input type="text" name="chairName" /></td>	
+		</tr>
+		<tr>
+			<td>Vice Chair</td>
+			<td><input type="radio" value="present" name="atten_vicechair_rbtn" /> </td>
+			<td><input type="radio" value="absent" name="atten_vicechair_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_vicechair_rbtn" /></td>	
+			<td><input type="text" name="vicechairName" /></td>
+		</tr>
+		<tr>
+			<td>Secretary</td>
+			<td><input type="radio" value="present" name="atten_secretary_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_secretary_rbtn"/></td>
+			<td><input type="radio" value="vacant" name="atten_secretary_rbtn"/></td>
+			<td><input type="text" name="secretaryName" /></td>	
+		</tr>
+		<tr>
+			<td>H &amp; I</td>
+			<td><input type="radio" value="present" name="atten_hi_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_hi_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_hi_rbtn" /></td>
+			<td><input type="text" name="hiName" /></td>
+		</tr>
+		<tr>
+			<td>PI</td>
+			<td><input type="radio" value="present" name="atten_pi_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_pi_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_pi_rbtn" /></td>	
+			<td><input type="text" name="piName" /></td>
+		</tr>
+		<tr>
+			<td>Schedule</td>
+			<td><input type="radio" value="present" name="atten_schedule_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_schedule_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_schedule_rbtn" /></td>	
+			<td><input type="text" name="scheduleName" /></td>
+		</tr>
+		<tr>
+			<td>Literature</td>
+			<td><input type="radio" value="present" name="atten_literature_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_literature_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_literature_rbtn" /></td>	
+			<td><input type="text" name="literatureName" /></td>
+		</tr>
+		<tr>
+			<td>Phone</td>
+			<td><input type="radio" value="present" name="atten_phone_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_phone_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_phone_rbtn" /></td>		
+			<td><input type="text" name="phoneName" /></td>
+		</tr>
+		<tr>
+			<td>Web</td>
+			<td><input type="radio" value="present" name="atten_web_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_web_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_web_rbtn" /></td>		
+			<td><input type="text" name="webName" /></td>
+		</tr>
+		<tr>
+			<td>Web Alt</td>
+			<td><input type="radio" value="present" name="atten_webalt_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_webalt_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_webalt_rbtn" /></td>		
+			<td><input type="text" name="webaltName" /></td>
+		</tr>
+		<tr>
+			<td>Rack</td>
+			<td><input type="radio" value="present" name="atten_rack_rbtn" /></td>
+			<td><input type="radio" value="absent" name="atten_rack_rbtn" /></td>
+			<td><input type="radio" value="vacant" name="atten_rack_rbtn" /></td>	
+			<td><input type="text" name="rackName" id="rackName" /></td>	
+		</tr>
+		<!-- all positions
+				chair, vicechair, secretary, h&i, PI, 
+				schedule, literature, phone, web, altweb, rack -->
+	</table>
+</form>
+
+<div>
+	<input type="button" value="TEST" 
+		onclick="testExisting()" />
+</div>
+
+<script type="text/javascript">
+	function testExisting() {
+		var result = reportAreaExists("rack");
+		alert(result);
+	}	
+</script>
+
+<div id="reportsDiv">
+	<!-- Dynamic report elements are created in here -->
+	<h2>Reports</h2>
+</div>
+
+<div>
+	<h2>Old Business</h2>
+	<textarea id="oldBusiness" name="oldBusiness"></textarea>
+</div>
+
+<div>
+	<h2>New Business</h2>
+	<textarea id="newBusiness" name="newBusiness"></textarea>
+</div>
+
+<script type="text/javascript">
+	window.onload = function() {
+		/* Runs when page loads. */
+		
+		prepareDocument();
+	}
+	
+	function prepareDocument() {
+		/* Performs any document preparation tasks */
+		setupRadioButtons();
+	}
+	
+	function setupRadioButtons(){
+		/* Finds all radio buttons on the page and attaches
+		   an event handler to the onclick event of each. This
+		   would need to change if any non-attendance radio 
+		   buttons are added to the document. */
+		allRbtns = document.querySelectorAll("input[type=radio]");
+		
+		for (var i = 0; i < allRbtns.length; i++) {
+			allRbtns[i].onclick = function() { 
+				attendanceRadioHandler(this); 
+			};
+		}
+	}
+
+	function attendanceRadioHandler (radio) {
+		/* Attendance radio button handler. Performs
+		   specific actions based on the value selected
+		   in a radio button group. */
+		
+		// Parent element of the radio button
+		var currEl = radio.parentElement;
+		
+		// Navigate up the until we reach a <tr> element
+		// Replace the current element with the new parent 
+		// at each iteration
+		// This would need to change if page design changes
+		// The radio buttons are currently in a table
+		while (currEl.tagName != "TR") {
+			currEl = currEl.parentElement;		
+		}
+		
+		// From the current parent element, find the textbox
+		// Finds the textbox in the same row as the radio button
+		var tBox = currEl.querySelector("input[type=text]");
+		// Get the position name from the radio button group name
+		var positionName = extractPositionName(radio.name);
+		
+		if (radio.value == "vacant") {
+			// If vacant, disable & empty name textbox
+			tBox.value = "";
+			tBox.disabled = true;
+			// Remove any report areas previously generated
+			destroyReportArea(positionName);
+		} else {
+			// value == present || value == absent
+			// Enable textbox
+			tBox.disabled = false;
+			// Create a report area for this position
+			createReportArea(positionName);
+		}
+	}
+	
+	function extractPositionName(radioName) {
+		/* Extracts the name of the position/servant from
+		   the name of the radio button group. This can be 
+		   determined as long as radio buttons follow naming 
+		   convention "atten_positionName_rbtn" */
+		
+		// Slice out the string between underscores
+		var name = radioName.slice(
+			radioName.indexOf("_") + 1, // Don't include underscore
+			radioName.lastIndexOf("_")
+		);
+		
+		return name;
+	}
+
+	function createReportArea(positionName) {
+		/* Creates a new div with a header and a textarea
+		   for writing reports. */
+		
+		// If the report area for the position doesn't already exist
+		// Necessary to avoid duplicates if a radio button was
+		// seleted 2x or present then absent clicked
+		if (!reportAreaExists(positionName)) {
+			// Create all new elements
+			var newDiv = document.createElement("div");
+			var newTextArea = document.createElement("textarea");
+			var newH3 = document.createElement("h3");
+			var h3TextNode = document.createTextNode(positionName.toUpperCase());
+			
+			// Give the new div a unique id
+			newDiv.id = positionName + "Report";
+			
+			// Combine/insert the new elements together
+			newH3.appendChild(h3TextNode);
+			newDiv.appendChild(newH3);
+			newDiv.appendChild(newTextArea);
+			
+			// Insert the new div with children into the document
+			document.getElementById("reportsDiv").appendChild(newDiv);
+		}	
+	}
+	
+	function destroyReportArea(positionName) {
+		/* Removes a report area from the document. Given the 
+		   position title the id of the report area can be determined */
+		   
+		// Attempt to retrieve the element
+		var reportEle = document.getElementById(positionName + "Report");
+		// If the element is not null (meaning it was found)
+		if (reportEle != null) {
+			// Navigate to parent element to call removeChild on 
+			// the element that needs to be removed.
+			reportEle.parentNode.removeChild(reportEle);
+		}
+	}
+	
+	function reportAreaExists(positionName) {
+		/* True if the report area already exists. The id
+		   of the element can be determined by the position 
+		   name based on naming convention. */
+		var possibleId = positionName + "Report";
+		var ele = document.getElementById(possibleId);
+		// If element null, item not found so return false, else true
+		if (ele == null) { return false; } else { return true; }
+	}
+	
+</script>
+
+</body>
+</html>
